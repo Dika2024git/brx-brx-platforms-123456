@@ -1,14 +1,16 @@
 // File: server.js
 // Deskripsi: Server utama untuk AI Chatbot menggunakan Express.js
+// Versi ini mengganti franc-min (ESM) dengan language-detect (CJS)
 
 // 1. Impor modul yang diperlukan
-import express from 'express';
-import fs from 'fs';
-import Fuse from 'fuse.js';
-import franc from 'franc-min';
-import xml2js from 'xml-js';
-import fetch from 'node-fetch'; // Gunakan node-fetch@2 untuk kompatibilitas CommonJS
-import cors from 'cors';
+const express = require('express');
+const fs = require('fs');
+const Fuse = require('fuse.js');
+// GANTI: 'franc-min' diganti dengan 'language-detect' yang support CJS
+const languageDetect = require('language-detect');
+const xml2js = require('xml-js');
+const fetch = require('node-fetch'); // Gunakan node-fetch@2 untuk kompatibilitas CommonJS
+const cors = require('cors');
 
 // 2. Inisialisasi aplikasi Express
 const app = express();
@@ -128,26 +130,33 @@ app.get('/chatbot', async (req, res) => {
     // Poin #13: Log setiap pertanyaan
     logUserQuery(userInput);
 
-    // Poin #7 & #14: Pemahaman & Deteksi Bahasa Otomatis
-    const lang = franc(userInput);
-    console.log(`Bahasa terdeteksi: ${lang}`); // 'ind' untuk Indonesia, 'eng' untuk Inggris, dll.
+    // Poin #7 & #14: Pemahaman & Deteksi Bahasa Otomatis menggunakan 'language-detect'
+    let detectedLang = 'unknown';
+    try {
+        // language-detect mengembalikan array, contoh: [['Indonesian', 0.6], ['English', 0.2]]
+        const detectionResult = languageDetect.detect(userInput, 1);
+        if (detectionResult.length > 0) {
+            detectedLang = detectionResult[0][0]; // Ambil nama bahasa yang paling mungkin
+        }
+    } catch (langErr) {
+        console.error("Language detection error:", langErr);
+    }
+    console.log(`Bahasa terdeteksi: ${detectedLang}`);
 
     let bestMatch = null;
     let highestScore = -1;
 
     // Poin #1, #4, #9, #19: Proses Q&A dengan Fuse.js dan threshold dinamis
-    // Fuse.js secara internal melakukan tokenisasi (Poin #19)
     knowledgeBase.forEach(item => {
         const fuse = new Fuse(item.patterns, {
             includeScore: true,
             threshold: item.threshold, // Menggunakan threshold dari XML
-            // Opsi lain bisa ditambahkan di sini
         });
 
         const results = fuse.search(userInput);
 
         if (results.length > 0) {
-            const score = 1 - results[0].score; // Fuse score is 0 for perfect match, 1 for no match. Invert it.
+            const score = 1 - results[0].score;
             if (score > highestScore) {
                 highestScore = score;
                 bestMatch = item;
@@ -159,35 +168,32 @@ app.get('/chatbot', async (req, res) => {
     if (bestMatch) {
         let responseText = bestMatch.responses[Math.floor(Math.random() * bestMatch.responses.length)];
 
-        // Poin #11: Jika intent memerlukan panggilan API
         if (bestMatch.apiCall) {
             const fact = await getGeneralFact();
             responseText = responseText.replace('{fact}', fact);
         }
 
-        // Poin #10: Entity Recognition sederhana
         bestMatch.entities.forEach(entity => {
-            const regex = new RegExp(`\\b(\\w+)\\b`, 'i'); // Contoh sederhana, bisa lebih kompleks
+            const regex = new RegExp(`\\b(\\w+)\\b`, 'i');
             const match = userInput.match(regex);
             if (match) {
                  responseText = responseText.replace(`{${entity}}`, match[1]);
             }
         });
 
-
         res.json({
             answer: responseText,
             intent: bestMatch.intent,
             score: highestScore,
-            detected_language: lang,
-            next_context: bestMatch.nextContext // Poin #18
+            detected_language: detectedLang, // Menggunakan hasil dari language-detect
+            next_context: bestMatch.nextContext
         });
     } else {
         res.status(404).json({
             answer: "Waduh, otak gue nge-lag nih. Kaga ngerti maksud lo apaan. Coba tanya yang laen, yang lebih gampang gitu.",
-            detected_language: lang
+            detected_language: detectedLang
         });
     }
 });
 
-export default app;
+module.exports = app;
