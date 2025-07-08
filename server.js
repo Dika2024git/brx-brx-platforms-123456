@@ -5,7 +5,7 @@
 const express = require('express');
 const fs = require('fs');
 const Fuse = require('fuse.js');
-const { franc } = require('franc-min');
+const franc = require('franc');
 const xml2js = require('xml-js');
 const fetch = require('node-fetch'); // Gunakan node-fetch@2 untuk kompatibilitas CommonJS
 const cors = require('cors');
