@@ -2,13 +2,13 @@
 // Deskripsi: Server utama untuk AI Chatbot menggunakan Express.js
 
 // 1. Impor modul yang diperlukan
-const express = require('express');
-const fs = require('fs');
-const Fuse = require('fuse.js');
-const franc = require('franc');
-const xml2js = require('xml-js');
-const fetch = require('node-fetch'); // Gunakan node-fetch@2 untuk kompatibilitas CommonJS
-const cors = require('cors');
+import express from 'express';
+import fs from 'fs';
+import Fuse from 'fuse.js';
+import franc from 'franc-min';
+import xml2js from 'xml-js';
+import fetch from 'node-fetch'; // Gunakan node-fetch@2 untuk kompatibilitas CommonJS
+import cors from 'cors';
 
 // 2. Inisialisasi aplikasi Express
 const app = express();
@@ -190,4 +190,4 @@ app.get('/chatbot', async (req, res) => {
     }
 });
 
-module.exports = app;
+export default app;

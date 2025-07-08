@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "AI Chatbot gaul dengan Express.js yang memenuhi 19 kriteria.",
   "main": "server.js",
-  "type": "commonjs"
+  "type": "module"
   "scripts": {
     "start": "node server.js"
   },
@@ -20,7 +20,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "fs": "*",
-    "franc": "^6.1.0",
+    "franc-min": "^6.1.0",
     "fuse.js": "^6.6.2",
     "node-fetch": "^2.6.7",
     "xml-js": "^1.6.11"
