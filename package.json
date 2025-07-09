@@ -1,27 +1,21 @@
 {
-  "name": "platform-api-brorax-ai-chatbot-gaul",
+  "name": "brorax-models",
   "version": "1.0.0",
-  "description": "AI Chatbot gaul dengan Express.js yang memenuhi 19 kriteria.",
-  "main": "server.js",
+  "description": "AI Chatbot pertanyaan umum dan nyeleneh dengan Express.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node index.js"
   },
-  "keywords": [
-    "chatbot",
-    "ai",
-    "express",
-    "fusejs",
-    "nlp"
-  ],
-  "author": "BroRAX",
+  "author": "BroRAX AI",
   "license": "MIT",
   "dependencies": {
-    "language-detect": "^1.2.1",
-    "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "fs": "*",
-    "fuse.js": "^6.6.2",
-    "node-fetch": "^2.6.7",
-    "xml-js": "^1.6.11"
+    "express": "^4.19.2",
+    "fuse.js": "^7.0.0",
+    "language-detect": "^0.2.0",
+    "natural": "^7.0.0",
+    "xml2js": "^0.6.2"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }

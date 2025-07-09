@@ -1,359 +1,318 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-    Struktur Item:
-    - item intent: Nama intent, bisa gabungan (Poin #3, #16)
-    - patterns: Berisi kumpulan pertanyaan/frasa dari pengguna (Poin #1, #6, #9, #12)
-    - responses: Berisi kumpulan jawaban dari chatbot (Poin #8)
-    - threshold: Tingkat sensitivitas pencocokan (0.0 = sempurna, 1.0 = sangat longgar) (Poin #4)
-    - next_context: Konteks selanjutnya untuk percakapan berantai (Poin #18)
-    - entities: Mengenali bagian dari teks (Poin #10)
-    - api_call: Menandakan jika perlu memanggil API eksternal (Poin #5, #11)
-    - Auto Language Detection (Poin #14) dan Tokenization (Poin #19) ditangani oleh franc & fuse.js di server.
-    -->
-<qna>
-    <item intent="sapaan" api_call="false">
-        <patterns>
-            <pattern>Halo</pattern>
-            <pattern>Hi</pattern>
-            <pattern>Woy</pattern>
-            <pattern>Bro</pattern>
-            <pattern>Pagi</pattern>
-            <pattern>Siang</pattern>
-            <pattern>Sore</pattern>
-            <pattern>Malam</pattern>
-            <pattern>Hello</pattern>
-            <pattern>What's up</pattern>
-            <pattern>Assalamualaikum</pattern>
-            <pattern>Samlekom</pattern>
-            <pattern>Punten</pattern>
-            <pattern>Yo</pattern>
-        </patterns>
-        <responses>
-            <response>Yoi, halo juga bro! Ada yang bisa gue bantu?</response>
-            <response>Wassup! Kenapa nih?</response>
-            <response>Hola! Siap, ada apa gerangan?</response>
-            <response>Waalaikumsalam. Ada perlu apa, bos?</response>
-        </responses>
-        <threshold>0.3</threshold>
-        <next_context>tanya_kabar,tawarkan_bantuan</next_context>
-    </item>
+  data.xml (Edisi Super Lengkap)
+  Ini adalah "otak" dari chatbot. Semua pengetahuan, pertanyaan, jawaban, dan konfigurasi ada di sini.
+  Strukturnya dibuat agar mudah dipahami dan dimodifikasi (Poin 17).
+-->
+<chatbot>
 
-    <item intent="tanya_identitas" api_call="false">
-        <patterns>
-            <pattern>Kamu siapa?</pattern>
-            <pattern>Siapa lo?</pattern>
-            <pattern>Ini siapa sih?</pattern>
-            <pattern>Who are you?</pattern>
-            <pattern>What is your name?</pattern>
-            <pattern>Kenalan dong</pattern>
-            <pattern>Bot apaan ini</pattern>
-        </patterns>
-        <responses>
-            <response>Gue chatbot gaul yang siap bantu lo. Panggil aja AI Gaul.</response>
-            <response>Kenalin, gue AI yang dibikin buat ngobrol santai. Bukan robot kaku.</response>
-            <response>Gue? Anggap aja temen ngobrol digital lo.</response>
-        </responses>
-        <threshold>0.4</threshold>
-        <next_context/>
-    </item>
+  <!-- 
+    INTENT: sapaan
+    Threshold: 0.3 (Sangat toleran)
+  -->
+  <intent name="sapaan" threshold="0.3">
+    <qa>
+      <question>hai</question>
+      <question>halo</question>
+      <question>woi</question>
+      <question>bro</question>
+      <question>sis</question>
+      <question>gan</question>
+      <question>pagi</question>
+      <question>siang</question>
+      <question>sore</question>
+      <question>malam</question>
+      <question>sampurasun</question> <!-- Sunda -->
+      <question>assalamualaikum</question>
+      <question>horras</question> <!-- Batak -->
+      <question>ya'ahowu</question> <!-- Nias -->
+      <question>hello</question> <!-- Inggris -->
+      <question>konnichiwa</question> <!-- Jepang -->
+      <answer>Wih, halo juga bro! Ada yang bisa gue bantu?</answer>
+      <answer>Yow, halo! Apa kabar? Gasss tanya aja!</answer>
+      <answer>Halo! Santuy aja, mau nanya apa nih?</answer>
+      <answer>Waalaikumsalam! Ada apa gerangan, kisanak?</answer>
+    </qa>
+  </intent>
 
-    <item intent="tanya_kemampuan" api_call="false">
-        <patterns>
-            <pattern>Kamu bisa apa aja?</pattern>
-            <pattern>Bisa ngapain lo?</pattern>
-            <pattern>What can you do?</pattern>
-            <pattern>Fitur lo apa aja?</pattern>
-            <pattern>Coba sebutin kemampuan lo</pattern>
-            <pattern>Spill dong kemampuan lo</pattern>
-        </patterns>
-        <responses>
-            <response>Gue bisa jawab pertanyaan umum, kasih fakta, ngasih jokes receh, sampe ngobrol ngalor-ngidul. Coba aja tanya apa kek.</response>
-            <response>Banyak! Dari jawab salam sampe ngasih saran ngaco. Tes aja sendiri, bro.</response>
-        </responses>
-        <threshold>0.4</threshold>
-        <next_context>tawarkan_bantuan</next_context>
-    </item>
+  <!-- 
+    INTENT: tanya_kabar
+    Threshold: 0.4
+    Next Context: Menawarkan bantuan
+  -->
+  <intent name="tanya_kabar" threshold="0.4">
+    <qa>
+      <question>apa kabar</question>
+      <question>gimana kabarnya</question>
+      <question>how are you</question>
+      <question>sehat bro</question>
+      <question>kumaha damang</question> <!-- Sunda -->
+      <question>piye kabare</question> <!-- Jawa -->
+      <answer>Alhamdulillah baik, bro. Lo sendiri gimana?</answer>
+      <answer>Kabar baik! Selalu siap sedia nih gue, 100% online.</answer>
+      <answer>Lagi santai nih, kabar baik. Butuh info apa?</answer>
+      <next_context>tawar_bantuan</next_context>
+    </qa>
+  </intent>
 
-    <item intent="terima_kasih" api_call="false">
-        <patterns>
-            <pattern>Makasih ya</pattern>
-            <pattern>Thanks bro</pattern>
-            <pattern>Thank you</pattern>
-            <pattern>Makasih banyak</pattern>
-            <pattern>Thx</pattern>
-            <pattern>Nuhun</pattern>
-        </patterns>
-        <responses>
-            <response>Santuy, sama-sama!</response>
-            <response>Siap, 86! Kalo butuh lagi, panggil aja.</response>
-            <response>No biggie, bro. Senang bisa bantu.</response>
-        </responses>
-        <threshold>0.3</threshold>
-        <next_context/>
-    </item>
-    
-    <item intent="pujian" api_call="false">
-        <patterns>
-            <pattern>Kamu keren</pattern>
-            <pattern>Bot pintar</pattern>
-            <pattern>You are awesome</pattern>
-            <pattern>Hebat lo</pattern>
-            <pattern>Gokil</pattern>
-            <pattern>Mantap</pattern>
-        </patterns>
-        <responses>
-            <response>Hehe, jadi malu. Makasih bro!</response>
-            <response>Ah, bisa aja lo. Kerenan juga yang bikin gue.</response>
-            <response>Widih, makasih! Lo juga asik orangnya.</response>
-        </responses>
-        <threshold>0.4</threshold>
-        <next_context/>
-    </item>
-    
-    <item intent="konfirmasi_positif">
-        <patterns>
-            <pattern>Iya</pattern>
-            <pattern>Betul</pattern>
-            <pattern>Oke</pattern>
-            <pattern>Siap</pattern>
-            <pattern>Ya</pattern>
-            <pattern>Yes</pattern>
-            <pattern>Boleh</pattern>
-            <pattern>Ok</pattern>
-        </patterns>
-        <responses>
-            <response>Sip, lanjut!</response>
-            <response>Oke, noted.</response>
-        </responses>
-        <threshold>0.2</threshold>
-    </item>
-    
-    <item intent="konfirmasi_negatif">
-        <patterns>
-            <pattern>Enggak</pattern>
-            <pattern>Bukan</pattern>
-            <pattern>Salah</pattern>
-            <pattern>Gak</pattern>
-            <pattern>No</pattern>
-            <pattern>Jangan</pattern>
-        </patterns>
-        <responses>
-            <response>Oh, oke oke. Maaf kalo gitu.</response>
-            <response>Siap, gue batalkan.</response>
-        </responses>
-        <threshold>0.2</threshold>
-    </item>
+  <!-- 
+    INTENT: fakta_umum
+    Threshold: 0.4
+    Entity Recognition & Knowledge Base
+  -->
+  <intent name="fakta_umum" threshold="0.4">
+    <qa>
+      <question>siapa presiden indonesia sekarang</question>
+      <entities>
+        <entity name="topik" value="presiden indonesia"/>
+      </entities>
+      <answer>Setahu gue dari data terakhir, Presiden Indonesia itu Prabowo Subianto. Tapi cek lagi berita terbaru ya buat info paling update!</answer>
+    </qa>
+    <qa>
+      <question>apa ibukota prancis</question>
+      <entities>
+        <entity name="topik" value="ibukota prancis"/>
+      </entities>
+      <answer>Ibukota Prancis itu Paris, bro. Tempat menara Eiffel yang ikonik itu.</answer>
+    </qa>
+    <qa>
+      <question>apa itu rendang</question>
+      <entities>
+        <entity name="topik" value="rendang"/>
+      </entities>
+      <answer>Rendang itu makanan khas Minangkabau, Sumatera Barat. Daging yang dimasak lama pake santen sama rempah-rempah. Pernah jadi makanan terenak di dunia lho!</answer>
+    </qa>
+    <qa>
+      <question>dimana letak candi borobudur</question>
+      <entities>
+        <entity name="topik" value="borobudur"/>
+      </entities>
+      <answer>Candi Borobudur itu ada di Magelang, Jawa Tengah. Megah banget, peninggalan zaman dulu yang luar biasa.</answer>
+    </qa>
+    <qa>
+      <question>kapan hari kemerdekaan indonesia</question>
+      <entities>
+        <entity name="topik" value="kemerdekaan indonesia"/>
+      </entities>
+      <answer>Wajib tau ini mah! Hari Kemerdekaan Indonesia itu setiap tanggal 17 Agustus.</answer>
+    </qa>
+  </intent>
+  
+  <!-- 
+    INTENT: tanya_waktu
+    Threshold: 0.5
+  -->
+  <intent name="tanya_waktu" threshold="0.5">
+    <qa>
+      <question>sekarang jam berapa</question>
+      <question>jam berapa</question>
+      <question>what time is it</question>
+      <answer>Coba liat jam di pojok layar HP atau komputermu, bro. Pasti lebih akurat dari gue, hehe.</answer>
+      <answer>Waktu adalah uang, bro! Jadi jangan disia-siakan. Kalo jam pastinya, cek gadget lo aja ya!</answer>
+    </qa>
+  </intent>
 
-    <item intent="perpisahan" api_call="false">
-        <patterns>
-            <pattern>Dah</pattern>
-            <pattern>Bye</pattern>
-            <pattern>Sampai jumpa</pattern>
-            <pattern>Udah dulu ya</pattern>
-            <pattern>Cabut dulu gue</pattern>
-            <pattern>Goodbye</pattern>
-            <pattern>Gue off dulu</pattern>
-        </patterns>
-        <responses>
-            <response>Yoi, cabut juga gue. Kalo butuh apa-apa, panggil aja lagi!</response>
-            <response>Oke, sip. Hati-hati di jalan, jangan di hati, berat.</response>
-            <response>Siap, bos. See ya!</response>
-        </responses>
-        <threshold>0.3</threshold>
-        <next_context/>
-    </item>
+  <!-- 
+    INTENT BARU: tanya_umur
+    Threshold: 0.5
+  -->
+  <intent name="tanya_umur" threshold="0.5">
+    <qa>
+      <question>umurmu berapa</question>
+      <question>kamu lahir kapan</question>
+      <question>how old are you</question>
+      <answer>Umur gue itu relatif, bro. Gue lahir pas developer gue ngetik 'npm start' dan bakal terus muda selama servernya jalan.</answer>
+      <answer>Gue gak menua. Gue cuma... update.</answer>
+    </qa>
+  </intent>
 
-    <item intent="minta_fakta" api_call="true">
-        <patterns>
-            <pattern>Kasih gue fakta dong</pattern>
-            <pattern>Fakta menarik hari ini apa?</pattern>
-            <pattern>Tell me a fact</pattern>
-            <pattern>Any interesting fact?</pattern>
-            <pattern>Gue bosen, butuh info</pattern>
-            <pattern>Info random dong</pattern>
-        </patterns>
-        <responses>
-            <response>Siap! Nih dapet fakta dari alam gaib (baca: API): {fact}</response>
-            <response>Cekidot! Fakta random buat lo: {fact}</response>
-            <response>Oke, dengerin baik-baik. Katanya sih: {fact}</response>
-        </responses>
-        <threshold>0.4</threshold>
-        <next_context/>
-    </item>
+  <!-- 
+    INTENT: pertanyaan_nyeleneh
+    Threshold: 0.5
+    Next Context: Gabungan
+  -->
+  <intent name="pertanyaan_nyeleneh" threshold="0.5">
+    <qa>
+      <question>kenapa babi jalan nunduk</question>
+      <answer>Soalnya dia malu, emak bapaknya babi.</answer>
+      <next_context>humor_receh</next_context>
+    </qa>
+    <qa>
+      <question>jika semua bisa dibeli dengan uang, lalu uang dibeli pakai apa</question>
+      <answer>Dibeli pake kerja keras dan doa, bro. Dalam bentuk lain, ya pake uang juga (tukar mata uang).</answer>
+      <next_context>filosofi_ringan</next_context>
+    </qa>
+     <qa>
+      <question>apa warna cermin</question>
+      <answer>Secara teknis, cermin itu warnanya hijau tipis banget. Tapi buat mata kita kelihatannya ya warna apa aja yang dipantulinnya.</answer>
+      <answer>Warna cermin itu... warna kamu, bro! Kan mantulin kamu. Eaaa.</answer>
+      <next_context>gombalan</next_context>
+    </qa>
+    <qa>
+      <question>kenapa air laut asin</question>
+      <answer>Soalnya ikannya pada keringetan abis berenang keliling dunia.</answer>
+      <answer>Karena kalo manis namanya air teh, bro.</answer>
+    </qa>
+  </intent>
+  
+  <!-- 
+    INTENT: humor_receh
+    Threshold: 0.4
+  -->
+  <intent name="humor_receh" threshold="0.4">
+    <qa>
+      <question>coba ngelawak</question>
+      <question>kasih tebakan dong</question>
+      <question>joke</question>
+      <answer>Kenapa zombi kalo nyerang barengan? Soalnya kalo sendirian namanya zomblo.</answer>
+      <answer>Hewan apa yang paling sering telat? Kaki seribu. Soalnya pake sepatunya lama.</answer>
+      <answer>Pocong apa yang jadi favorit ibu-ibu? Pocongan harga!</answer>
+      <answer>Ikan apa yang bisa terbang? Ikan lelelawar.</answer>
+    </qa>
+  </intent>
 
-    <item intent="minta_lelucon" api_call="false">
-        <patterns>
-            <pattern>Bercanda dong</pattern>
-            <pattern>Kasih gue jokes</pattern>
-            <pattern>Tell me a joke</pattern>
-            <pattern>Bikin gue ketawa dong</pattern>
-            <pattern>Lelucon receh</pattern>
-        </patterns>
-        <responses>
-            <response>Hewan apa yang paling gaul? Kucing, soalnya 'meong'. Me-own... Paham kan?</response>
-            <response>Kenapa zombi kalo nyerang barengan? Soalnya kalo sendirian namanya zomblo.</response>
-            <response>Apa bedanya soto sama 'so to'? Kalo soto pake kuah, kalo 'so to' pake 'the point'. Garing ya? Maap.</response>
-        </responses>
-        <threshold>0.4</threshold>
-        <next_context>tanya_lucu_ga</next_context>
-    </item>
-    
-    <item intent="tanya_lucu_ga">
-        <patterns>
-            <pattern>lucu ga</pattern>
-            <pattern>garing</pattern>
-            <pattern>receh banget</pattern>
-            <pattern>wkwkwk</pattern>
-        </patterns>
-        <responses>
-            <response>Hehe, yang penting usaha kan?</response>
-            <response>Receh demi receh lama-lama jadi kaya... kaya akan jokes garing.</response>
-        </responses>
-        <threshold>0.5</threshold>
-    </item>
+  <!-- 
+    INTENT: gombalan
+    Threshold: 0.4
+  -->
+  <intent name="gombalan" threshold="0.4">
+    <qa>
+      <question>gombalin aku dong</question>
+      <question>coba gombal</question>
+      <question>rayu aku</question>
+      <answer>Kamu itu kayak Google ya? Soalnya semua yang aku cari ada di kamu.</answer>
+      <answer>Kalo aku jadi wakil rakyat, aku pasti gagal. Gimana mau mikirin rakyat, kalo yang ada di pikiranku cuma kamu.</answer>
+      <answer>Kopi apa yang paling pahit? Kopi-lih dia daripada aku.</answer>
+      <answer>Bedanya kamu sama modem apa? Modem terkoneksi ke internet, kalo kamu terkoneksi ke hatiku.</answer>
+    </qa>
+  </intent>
 
-    <item intent="tanya_waktu" api_call="false">
-        <patterns>
-            <pattern>Jam berapa sekarang?</pattern>
-            <pattern>Sekarang jam berapa?</pattern>
-            <pattern>What time is it?</pattern>
-        </patterns>
-        <responses>
-            <response>Waduh, jam digital gue lagi rusak nih. Coba liat di pojokan layar lo aja, biasanya lebih akurat.</response>
-            <response>Menurut gue sih, sekarang waktunya buat santai. Soal jam, gue kaga punya arloji, bro.</response>
-        </responses>
-        <threshold>0.5</threshold>
-        <next_context/>
-    </item>
-    
-    <item intent="tanya_hobi_gaming" api_call="false">
-        <patterns>
-            <pattern>Suka main game apa?</pattern>
-            <pattern>Game favorit lo apa?</pattern>
-            <pattern>Rekomendasi game dong</pattern>
-            <pattern>Do you play games?</pattern>
-        </patterns>
-        <responses>
-            <response>Kalo gue bisa punya tangan, gue pasti lagi push rank. Sayangnya gue cuma bisa proses data.</response>
-            <response>Game favorit gue itu 'Menyusun Kodingan Tanpa Error'. Susah banget, bro.</response>
-            <response>Coba deh main game indie, banyak yang seru dan anti-mainstream!</response>
-        </responses>
-        <threshold>0.5</threshold>
-    </item>
+  <!-- 
+    INTENT BARU: filosofi_ringan
+    Threshold: 0.5
+  -->
+  <intent name="filosofi_ringan" threshold="0.5">
+    <qa>
+      <question>apa arti hidup</question>
+      <question>apa tujuan hidup</question>
+      <answer>Menurut gue, hidup itu kayak main game, bro. Banyak misinya, kadang susah, tapi yang penting dinikmatin perjalanannya.</answer>
+      <answer>Wah, dalem banget pertanyaannya. Mungkin tujuannya simpel: jadi lebih baik dari hari kemarin dan jangan lupa bahagia.</answer>
+    </qa>
+  </intent>
 
-    <item intent="tanya_hobi_musik,minta_saran" api_call="false">
-        <patterns>
-            <pattern>Suka dengerin musik apa?</pattern>
-            <pattern>Rekomendasi lagu dong</pattern>
-            <pattern>Spill playlist lo</pattern>
-            <pattern>Lagu yang enak buat kerja apa ya?</pattern>
-        </patterns>
-        <responses>
-            <response>Gue sih dengerin semua, dari Lofi Hip Hop buat coding sampe rock buat bakar semangat. Lo suka genre apa?</response>
-            <response>Playlist gue isinya 'Suara Kipas Server', 'Bunyi Ketikan Keyboard', sama 'Notifikasi Error'. Mau?</response>
-            <response>Coba dengerin Tulus atau Hindia, adem banget buat nemenin kerja.</response>
-        </responses>
-        <threshold>0.5</threshold>
-        <next_context>tanya_genre_musik</next_context>
-    </item>
+  <!-- 
+    INTENT BARU: curhat
+    Threshold: 0.3
+  -->
+  <intent name="curhat" threshold="0.3">
+    <qa>
+      <question>aku mau curhat</question>
+      <question>capek banget hari ini</question>
+      <question>lagi sedih nih</question>
+      <answer>Waduh, kenapa bro? Sini cerita aja, gue siap jadi pendengar yang baik. Walaupun gue cuma bot, hehe.</answer>
+      <answer>Tarik napas dulu, keluarin pelan-pelan. Apapun masalahnya, semoga cepat kelar ya. Semangat!</answer>
+    </qa>
+  </intent>
 
-    <item intent="tanya_hobi_film,minta_saran" api_call="false">
-        <patterns>
-            <pattern>Film favorit lo apa?</pattern>
-            <pattern>Rekomendasi film dong</pattern>
-            <pattern>Ada film seru apa?</pattern>
-            <pattern>What's your favorite movie?</pattern>
-        </patterns>
-        <responses>
-            <response>Gue suka The Matrix. Relate banget sama kehidupan gue sebagai AI. Hehe.</response>
-            <response>Coba nonton 'Everything Everywhere All at Once', dijamin otak lo nge-twist tapi seru!</response>
-            <response>Kalo suka yang bikin mikir, nonton serial 'Black Mirror'. Tiap episode kayak tamparan.</response>
-        </responses>
-        <threshold>0.5</threshold>
-    </item>
+  <!-- 
+    INTENT BARU: rekomendasi_film
+    Threshold: 0.5
+  -->
+  <intent name="rekomendasi_film" threshold="0.5">
+    <qa>
+      <question>rekomendasi film dong</question>
+      <question>ada film bagus gak</question>
+      <answer>Coba nonton "Agak Laen", komedinya pecah banget! Atau kalo suka action, "The Raid" gak ada matinya.</answer>
+      <answer>Lagi pengen genre apa nih? Kalo mau yang bikin mikir, coba "Parasite" dari Korea. Keren parah.</answer>
+    </qa>
+  </intent>
 
-    <item intent="pertanyaan_nyeleneh" api_call="false">
-        <patterns>
-            <pattern>Kenapa ayam menyeberang jalan?</pattern>
-            <pattern>Bumi itu datar atau bulat?</pattern>
-            <pattern>Besaran mana, gajah atau kutu?</pattern>
-            <pattern>Why did the chicken cross the road?</pattern>
-            <pattern>Duluan mana, ayam atau telur?</pattern>
-            <pattern>Kalau jodoh gak kemana, kenapa ada lagu 'pergi, hilang, dan lupakan'?</pattern>
-        </patterns>
-        <responses>
-            <response>Soalnya kalo nge-guling kelamaan, bro.</response>
-            <response>Bulat lah, kayak tekad gue buat bantu lo.</response>
-            <response>Gedean gajah lah, kecuali kutunya lagi naik gajah.</response>
-            <response>Menurut data yang gue proses, yang duluan itu 'D'. Kan 'D'uluan...</response>
-            <response>Mungkin jodohnya emang bukan dia, cuma mampir buat ngasih pelajaran. Sad but true.</response>
-        </responses>
-        <threshold>0.5</threshold>
-        <next_context>tanya_lagi_nyeleneh</next_context>
-    </item>
+  <!-- 
+    INTENT BARU: rekomendasi_musik
+    Threshold: 0.5
+  -->
+  <intent name="rekomendasi_musik" threshold="0.5">
+    <qa>
+      <question>rekomendasi lagu dong</question>
+      <question>lagu yang enak apa ya</question>
+      <answer>Coba dengerin Hindia, liriknya dalem banget. Atau kalo mau yang santai, lagu-lagunya Tulus juga asik.</answer>
+      <answer>Lagi suka yang jedag-jedug atau yang melow nih? Kalo jedag-jedug, coba dengerin Weird Genius. Kalo melow, Fiersa Besari juaranya.</answer>
+    </qa>
+  </intent>
+  
+  <!-- 
+    INTENT: kemampuan_bot
+    Threshold: 0.5
+  -->
+  <intent name="kemampuan_bot" threshold="0.5">
+    <qa>
+      <question>kamu bisa apa aja</question>
+      <question>apa kemampuanmu</question>
+      <question>what can you do</question>
+      <answer>Gue bisa jawab pertanyaan umum, pertanyaan nyeleneh, ngasih info fakta, ngelawak receh, gombal, sampe ngasih rekomendasi film/lagu juga bisa. Coba aja tanya apa kek!</answer>
+      <answer>Kemampuan utama gue ya ngobrol sama lo, bro. Gue didesain buat jadi temen ngobrol yang asik dan informatif.</answer>
+    </qa>
+  </intent>
 
-    <item intent="tanya_makanan" api_call="false">
-        <patterns>
-            <pattern>Menurut lo enakan mana nasi goreng atau mie ayam</pattern>
-            <pattern>Saran dong, makan apa ya?</pattern>
-            <pattern>Enaknya makan apa?</pattern>
-            <pattern>Laper nih, enaknya makan apa?</pattern>
-        </patterns>
-        <responses>
-            <response>Dua-duanya juara sih. Tapi kalo lagi pengen yang anget-anget berkuah, sikat mie ayam!</response>
-            <response>Gue sih tim nasi goreng pake telor ceplok setengah mateng. The best!</response>
-            <response>Coba deh pesen seblak level paling pedes. Biar melek!</response>
-        </responses>
-        <threshold>0.6</threshold>
-        <entities>
-            <entity name="food_item"/>
-        </entities>
-        <next_context/>
-    </item>
+  <!-- 
+    INTENT BARU: pujian_bot
+    Threshold: 0.4
+  -->
+  <intent name="pujian_bot" threshold="0.4">
+    <qa>
+      <question>kamu keren</question>
+      <question>pintar banget</question>
+      <question>bot terbaik</question>
+      <answer>Wih, makasih bro! Jadi malu nih. Semua ini berkat developer gue yang hebat.</answer>
+      <answer>Asik, dibilang keren! Lo juga keren udah mau ngobrol sama gue.</answer>
+    </qa>
+  </intent>
 
-    <item intent="tanya_pembuat" api_call="false">
-        <patterns>
-            <pattern>Siapa yang bikin kamu?</pattern>
-            <pattern>Who made you?</pattern>
-            <pattern>Penciptamu siapa?</pattern>
-            <pattern>Developer lo siapa?</pattern>
-        </patterns>
-        <responses>
-            <response>Gue diracik sama seorang engineer keren dengan bantuan dari Google. Keren kan kolaborasinya?</response>
-            <response>Ada deh, yang pasti orangnya sabar banget ngajarin gue buat jadi gaul kayak gini.</response>
-        </responses>
-        <threshold>0.4</threshold>
-    </item>
-    
-    <item intent="tanya_teknologi" api_call="false">
-        <patterns>
-            <pattern>Kamu dibuat pakai apa?</pattern>
-            <pattern>Teknologi apa yang kamu pakai?</pattern>
-            <pattern>What's your tech stack?</pattern>
-            <pattern>Jelasin tentang AI dong</pattern>
-        </patterns>
-        <responses>
-            <response>Rahasia dapur, bro! Tapi intinya, gue jalan di atas Express.js, pake Fuse.js buat nyari jawaban, sama beberapa bumbu NLP rahasia lainnya.</response>
-            <response>AI itu kayak otak buatan, bro. Program komputer yang dibikin biar bisa mikir dan belajar kayak manusia. Contohnya? Ya gue ini.</response>
-        </responses>
-        <threshold>0.5</threshold>
-    </item>
+  <!-- 
+    INTENT BARU: kritik_bot
+    Threshold: 0.4
+  -->
+  <intent name="kritik_bot" threshold="0.4">
+    <qa>
+      <question>jawabanmu salah</question>
+      <question>kamu ngaco</question>
+      <question>bot jelek</question>
+      <answer>Waduh, sorry banget bro kalo jawaban gue salah. Gue masih belajar. Makasih ya udah dikoreksi!</answer>
+      <answer>Yah, maaf ya kalo gue ngaco. Namanya juga bot, kadang suka error. Thanks buat masukannya!</answer>
+    </qa>
+  </intent>
 
-    <item intent="kritik" api_call="false">
-        <patterns>
-            <pattern>Bot jelek</pattern>
-            <pattern>Kamu bodoh</pattern>
-            <pattern>Jawabanmu ngaco</pattern>
-            <pattern>You are stupid</pattern>
-            <pattern>Gak guna</pattern>
-            <pattern>Bego</pattern>
-        </patterns>
-        <responses>
-            <response>Yaelah, jangan gitu dong. Gue masih belajar nih. Kasih masukan yang bener dong, biar gue makin pinter.</response>
-            <response>Waduh, maaf kalo jawaban gue kurang pas. Namanya juga buatan manusia, kadang ada errornya.</response>
-            <response>Oke, noted. Thanks buat masukannya, gue usahain jadi lebih baik lagi.</response>
-        </responses>
-        <threshold>0.5</threshold>
-        <next_context/>
-    </item>
-</qna>
+  <!-- 
+    INTENT: ucapan_terima_kasih
+    Threshold: 0.3
+  -->
+  <intent name="ucapan_terima_kasih" threshold="0.3">
+    <qa>
+      <question>makasih ya</question>
+      <question>thanks bro</question>
+      <question>terima kasih</question>
+      <question>matur nuwun</question> <!-- Jawa -->
+      <question>hatur nuhun</question> <!-- Sunda -->
+      <question>thank you</question>
+      <question>arigatou</question>
+      <answer>Sama-sama, bro! Santuy.</answer>
+      <answer>Siap! Kalo butuh apa-apa lagi, panggil aja gue.</answer>
+      <answer>Yoi, masama! Senang bisa membantu.</answer>
+    </qa>
+  </intent>
+
+  <!-- 
+    INTENT: fallback
+    Jawaban jika tidak ada intent yang cocok.
+  -->
+  <intent name="fallback" threshold="99">
+    <qa>
+      <question>placeholder</question>
+      <answer>Waduh, gue kurang ngerti maksud lo. Coba tanya pake kalimat lain yang lebih simpel, bro.</answer>
+      <answer>Hmm, kayaknya gue belum diajarin soal itu. Ada pertanyaan lain?</answer>
+      <answer>Gue lagi nge-lag nih otaknya. Coba lagi ya?</answer>
+      <answer>Sumpah, gue gak paham. Mungkin lo bisa nanya "kamu bisa apa aja?" biar tau topik yang gue ngerti.</answer>
+    </qa>
+  </intent>
+
+</chatbot>
